@@ -1,0 +1,58 @@
+{
+    "name": "bisbis10_typescript",
+    "version": "1.0.0",
+    "description": "The bisbis10 restaurant management system is a backend service designed to handle various operations related to restaurants, their dishes, and ratings. The system aims to provide a comprehensive platform for managing restaurant data, including details about the restaurants, their cuisines, dishes, and customer ratings.",
+    "main": "index.js",
+    "scripts": {
+        "test": "jest",
+        "build": "npx tsc",
+        "start": "node dist/index.js",
+        "dev": "nodemon index.ts",
+        "db:generate": "drizzle-kit generate"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "class-transformer": "^0.5.1",
+        "class-validator": "^0.14.1",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.7",
+        "drizzle-orm": "^0.40.0",
+        "express": "^4.19.2",
+        "http-status-codes": "^2.3.0",
+        "nodemon": "^3.1.0",
+        "pg": "^8.13.3",
+        "pg-hstore": "^2.3.4",
+        "postgres": "^3.4.5",
+        "uuid": "^9.0.1"
+    },
+    "devDependencies": {
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "@types/jest": "^29.5.12",
+        "@types/pg": "^8.11.11",
+        "@types/supertest": "^6.0.2",
+        "@types/uuid": "^9.0.8",
+        "drizzle-kit": "^0.30.5",
+        "jest": "^29.7.0",
+        "supertest": "^7.0.0",
+        "ts-node-dev": "^2.0.0",
+        "tsx": "^4.19.3",
+        "typescript": "^5.4.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/shlomi-levi/bisbis10_typescript.git"
+    },
+    "jest": {
+        "testMatch": [
+            "**/?(*.)+(spec|test).[j]s?(x)"
+        ],
+        "silent": false
+    },
+    "bugs": {
+        "url": "https://github.com/shlomi-levi/bisbis10_typescript/issues"
+    },
+    "homepage": "https://github.com/shlomi-levi/bisbis10_typescript#readme"
+}
