@@ -2,10 +2,10 @@ import { IsArray, IsInt, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
 class orderItemsDTO {
-    @IsInt()
+    @IsInt({ message: "dishId must be an integer" })
     dishId: number;
 
-    @IsInt()
+    @IsInt({ message: "amount must be an integer" })
     amount: number;
 }
 

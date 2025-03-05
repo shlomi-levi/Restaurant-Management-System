@@ -2,6 +2,23 @@ import { StatusCodes } from "http-status-codes";
 import { Request, Response } from "express";
 import { validate } from "class-validator";
 
+export const validateSyntax = (requestType: any) => {
+    const routeDTO = {};
+    const bodyDTO = {};
+    const queryDTO = {};
+
+    // This is the returned middleware function
+    return function (req: Request, res: Response, next: NextFunction) {
+        // Logic to validate based on `param`
+        if (!req.body[param]) {
+            // If validation fails, return a 400 error with a message
+            return res.status(400).json({ error: `${param} is required` });
+        }
+
+        // If validation passes, proceed to the next middleware
+        next();
+    };
+};
 export const validateInput = async (
     req: Request,
     res: Response,

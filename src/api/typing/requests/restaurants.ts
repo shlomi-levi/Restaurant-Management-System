@@ -1,45 +1,45 @@
 import { IsString, IsBoolean, IsInt, IsArray } from "class-validator";
 
 export class getRestaurantsByCuisineQueryDTO {
-    @IsString()
+    @IsString({ message: "cuisine must be a string" })
     cuisine: string;
 }
 
 export class getRestaurantsByIdRouteDTO {
-    @IsInt()
+    @IsInt({ message: "id must be an integer" })
     id: number;
 }
 
 export class addNewRestaurantBodyDTO {
-    @IsString()
+    @IsString({ message: "restaurant name must be a string" })
     name: string;
 
-    @IsBoolean()
+    @IsBoolean({ message: "isKosher must be a boolean" })
     isKosher: boolean;
 
-    @IsArray()
-    @IsString({ each: true })
+    @IsArray({ message: "cuisines must be an array of strings" })
+    @IsString({ each: true, message: "cuisines must be an array of strings" })
     cuisines: string[];
 }
 
 export class updateRestaurantBodyDTO {
-    @IsString()
+    @IsString({ message: "restaurant name must be a string" })
     name?: string;
 
-    @IsBoolean()
+    @IsBoolean({ message: "isKosher must be a boolean" })
     isKosher?: boolean;
 
-    @IsArray()
-    @IsString({ each: true })
+    @IsArray({ message: "cuisines must be an array of strings" })
+    @IsString({ each: true, message: "cuisines must be an array of strings" })
     cuisines?: string[];
 }
 
 export class updateRestaurantRouteDTO {
-    @IsInt()
+    @IsInt({ message: "Route parameter {id} must be an integer" })
     id: number;
 }
 
 export class deleteRestaurantRouteDTO {
-    @IsInt()
+    @IsInt({ message: "Route parameter {id} must be an integer" })
     id: number;
 }
