@@ -1,17 +1,14 @@
 import { Router } from "express";
-import {
-    validateDishesExistence,
-    validateNewOrderSyntax,
-} from "../handlers/middleware/orders";
-import ordersHandler from "../handlers/orders";
+import { validateDishesExistence } from "../middleware/validation/orders";
+import { validateSyntax } from "../middleware/validation/orders";
+import ordersHandler from "../../handlers/orders";
+import { ORDERS_REQUESTS } from "../../typing/api";
 
-const router = Router();
+export const ordersRouter = Router();
 
-router.post(
+ordersRouter.post(
     "/",
-    validateNewOrderSyntax,
+    validateSyntax[ORDERS_REQUESTS.ADD_ORDER],
     validateDishesExistence,
-    ordersHandler.handleNewOrder
+    ordersHandler.addNewOrder
 );
-
-export default router;

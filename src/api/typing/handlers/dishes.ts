@@ -2,13 +2,13 @@ import * as dto from "../requests/dishes";
 import Handler from "./utils";
 
 interface dishesInterface {
-    addDish: Handler<dto.addDishRouteDTO, dto.addDishBodyDTO, {}>;
+    addDish: Handler<dto.addDishBodyDTO, {}>;
 
-    updateDish: Handler<dto.updateDishRouteDTO, dto.updateDishBodyDTO>;
+    updateDish: Handler<dto.updateDishBodyDTO>;
 
-    deleteDish: Handler<dto.deleteDishRouteDTO>;
+    deleteDish: Handler;
 
-    getDishesByRestaurant: Handler<dto.getDishesByRestaurantRouteDTO>;
+    getDishesByRestaurant: Handler;
 }
 
 export default dishesInterface;

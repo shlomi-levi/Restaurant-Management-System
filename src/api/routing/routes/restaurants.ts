@@ -1,74 +1,77 @@
 import { Router } from "express";
-import RestaurantsHandler from "../handlers/restaurants";
-
 import {
-    postRestaurantValidator,
-    putRestaurantValidator,
-    postDishValidator,
     restaurantExistenceValidator,
     dishExistenceValidator,
-    putDishValidator,
-    emptyBodyValidator,
-} from "../handlers/middleware/restaurants";
+} from "../middleware/validation/restaurants";
+import RestaurantsHandler from "../../handlers/restaurants";
+import dishesHandler from "../../handlers/dishes";
+import { validateSyntax } from "../middleware/validation/restaurants";
+import { RESTAURANTS_REQUESTS, DISHES_REQUESTS } from "../../typing/api";
 
-const router = Router();
+export const restaurantsRouter = Router();
 
 /* Restaurant API */
 
-router.get("/", emptyBodyValidator, RestaurantsHandler.getRestaurants);
+restaurantsRouter.get(
+    "/",
+    validateSyntax[RESTAURANTS_REQUESTS.GET_ALL_RESTAURANTS],
+    RestaurantsHandler.getAllRestaurants
+);
 
-router.get(
+restaurantsRouter.get(
     "/:id",
-    emptyBodyValidator,
+    validateSyntax[RESTAURANTS_REQUESTS.GET_RESTAURANT_BY_ID],
     restaurantExistenceValidator,
     RestaurantsHandler.getRestaurantById
 );
 
-router.post("/", postRestaurantValidator, RestaurantsHandler.addNewRestaurant);
+restaurantsRouter.post(
+    "/",
+    validateSyntax[RESTAURANTS_REQUESTS.ADD_RESTAURANT],
+    RestaurantsHandler.addNewRestaurant
+);
 
-router.put(
+restaurantsRouter.put(
     "/:id",
-    putRestaurantValidator,
+    validateSyntax[RESTAURANTS_REQUESTS.UPDATE_RESTAURANT],
     restaurantExistenceValidator,
     RestaurantsHandler.updateRestaurant
 );
 
-router.delete(
+restaurantsRouter.delete(
     "/:id",
-    emptyBodyValidator,
+    validateSyntax[RESTAURANTS_REQUESTS.DELETE_RESTAURANT],
     restaurantExistenceValidator,
     RestaurantsHandler.deleteRestaurant
 );
 
 /* Dishes API */
-router.post(
+restaurantsRouter.post(
     "/:id/dishes",
-    postDishValidator,
+    validateSyntax[DISHES_REQUESTS.ADD_DISH],
     restaurantExistenceValidator,
-    RestaurantsHandler.addDish
+    dishesHandler.addDish
 );
 
-router.put(
+restaurantsRouter.put(
     "/:id/dishes/:dishId",
-    putDishValidator,
+    validateSyntax[DISHES_REQUESTS.UPDATE_DISH],
     restaurantExistenceValidator,
     dishExistenceValidator,
-    RestaurantsHandler.updateDish
+    dishesHandler.updateDish
 );
 
-router.delete(
+restaurantsRouter.delete(
     "/:id/dishes/:dishId",
-    emptyBodyValidator,
+    validateSyntax[DISHES_REQUESTS.DELETE_DISH],
     restaurantExistenceValidator,
     dishExistenceValidator,
-    RestaurantsHandler.deleteDish
+    dishesHandler.deleteDish
 );
 
-router.get(
+restaurantsRouter.get(
     "/:id/dishes",
-    emptyBodyValidator,
+    validateSyntax[DISHES_REQUESTS.GET_DISHES_BY_RESTAURANT],
     restaurantExistenceValidator,
-    RestaurantsHandler.getDishesByRestaurant
+    dishesHandler.getDishesByRestaurant
 );
-
-export default router;

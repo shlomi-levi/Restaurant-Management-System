@@ -2,8 +2,6 @@ import { IsArray, IsInt, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 import { ORDERS_REQUESTS, RequestDTO, EmptyClass } from "../api";
 
-type RequestTypes = keyof typeof ORDERS_REQUESTS;
-
 class orderItemsDTO {
     @IsInt({ message: "dishId must be an integer" })
     dishId: number;
@@ -22,8 +20,8 @@ export class addOrderBodyDTO {
     orderItems: orderItemsDTO[];
 }
 
-export const requestTypeToDTO: Record<RequestTypes, RequestDTO> = {
-    ADD_ORDER: {
+export const requestTypeToDTO: Record<ORDERS_REQUESTS, RequestDTO> = {
+    [ORDERS_REQUESTS.ADD_ORDER]: {
         routeDTO: EmptyClass,
         bodyDTO: addOrderBodyDTO,
         queryDTO: EmptyClass,

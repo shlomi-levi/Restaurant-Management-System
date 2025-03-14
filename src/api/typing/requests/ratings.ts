@@ -1,8 +1,6 @@
 import { IsInt, IsNumber, Min, Max } from "class-validator";
 import { EmptyClass, RATINGS_REQUESTS, RequestDTO } from "../api";
 
-type RequestTypes = keyof typeof RATINGS_REQUESTS;
-
 export class addRatingBodyDTO {
     @IsInt({ message: "restaurantId must be an integer" })
     restaurantId: number;
@@ -13,8 +11,8 @@ export class addRatingBodyDTO {
     rating: number;
 }
 
-export const requestTypeToDTO: Record<RequestTypes, RequestDTO> = {
-    ADD_RATING: {
+export const requestTypeToDTO: Record<RATINGS_REQUESTS, RequestDTO> = {
+    [RATINGS_REQUESTS.ADD_RATING]: {
         routeDTO: EmptyClass,
         bodyDTO: addRatingBodyDTO,
         queryDTO: EmptyClass,

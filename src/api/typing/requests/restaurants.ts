@@ -1,8 +1,6 @@
 import { IsString, IsBoolean, IsInt, IsArray, IsNotEmpty } from "class-validator";
-import { IsOptionalNonNullable } from "../../routing/middleware/validator";
+import { IsOptionalNonNullable } from "../../routing/middleware/validation/validator";
 import { RESTAURANTS_REQUESTS, RequestDTO, EmptyClass } from "../api";
-
-type RequestTypes = keyof typeof RESTAURANTS_REQUESTS;
 
 export class getRestaurantsByCuisineQueryDTO {
     @IsString({ message: "cuisine must be a string" })
@@ -13,6 +11,8 @@ export class getRestaurantsByIdRouteDTO {
     @IsInt({ message: "id must be an integer" })
     id: number;
 }
+
+export class verifyRestaurantExistenceDTO extends getRestaurantsByIdRouteDTO {} // Same
 
 export class addNewRestaurantBodyDTO {
     @IsString({ message: "restaurant name must be a string" })
@@ -54,38 +54,38 @@ export class deleteRestaurantRouteDTO {
     id: number;
 }
 
-export const requestTypeToDTO: Record<RequestTypes, RequestDTO> = {
-    GET_ALL_RESTAURANTS: {
+export const requestTypeToDTO: Record<RESTAURANTS_REQUESTS, RequestDTO> = {
+    [RESTAURANTS_REQUESTS.GET_ALL_RESTAURANTS]: {
         routeDTO: EmptyClass,
         bodyDTO: EmptyClass,
         queryDTO: EmptyClass,
     },
 
-    GET_RESTAURANTS_BY_CUISINE: {
+    [RESTAURANTS_REQUESTS.GET_RESTAURANTS_BY_CUISINE]: {
         routeDTO: EmptyClass,
         bodyDTO: EmptyClass,
         queryDTO: getRestaurantsByCuisineQueryDTO,
     },
 
-    GET_RESTAURANT_BY_ID: {
+    [RESTAURANTS_REQUESTS.GET_RESTAURANT_BY_ID]: {
         routeDTO: getRestaurantsByIdRouteDTO,
         bodyDTO: EmptyClass,
         queryDTO: EmptyClass,
     },
 
-    ADD_RESTAURANT: {
+    [RESTAURANTS_REQUESTS.ADD_RESTAURANT]: {
         routeDTO: EmptyClass,
         bodyDTO: addNewRestaurantBodyDTO,
         queryDTO: EmptyClass,
     },
 
-    UPDATE_RESTAURANT: {
+    [RESTAURANTS_REQUESTS.UPDATE_RESTAURANT]: {
         routeDTO: updateRestaurantRouteDTO,
         bodyDTO: updateRestaurantBodyDTO,
         queryDTO: EmptyClass,
     },
 
-    DELETE_RESTAURANT: {
+    [RESTAURANTS_REQUESTS.DELETE_RESTAURANT]: {
         routeDTO: deleteRestaurantRouteDTO,
         bodyDTO: EmptyClass,
         queryDTO: EmptyClass,

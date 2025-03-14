@@ -1,15 +1,16 @@
 import { Router } from "express";
-import { validatePostRating } from "../handlers/middleware/ratings";
-import RatingsHandler from "../handlers/ratings";
-import { validateRestaurantExistence } from "../handlers/middleware/ratings";
+import {
+    validateSyntax,
+    validateRestaurantExistence,
+} from "../middleware/validation/ratings";
+import RatingsHandler from "../../handlers/ratings";
+import { RATINGS_REQUESTS } from "../../typing/api";
 
-const router = Router();
+export const ratingsRouter = Router();
 
-router.post(
+ratingsRouter.post(
     "/",
-    validatePostRating,
+    validateSyntax[RATINGS_REQUESTS.ADD_RATING],
     validateRestaurantExistence,
     RatingsHandler.handleNewRating
 );
-
-export default router;

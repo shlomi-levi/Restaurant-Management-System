@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { db } from "../../db/db";
 import { arrayOverlaps, eq } from "drizzle-orm";
 import * as schema from "../../db/drizzle/schema";
+import * as dto from "../typing/requests/restaurants";
 
 const Handler: restaurantsInterface = {
     getAllRestaurants: async (req, res, next) => {
@@ -24,10 +25,12 @@ const Handler: restaurantsInterface = {
     },
 
     getRestaurantById: async (req, res, next) => {
+        const route_parameters = req.params as dto.getRestaurantsByIdRouteDTO;
+
         const result = await db
             .select()
             .from(schema.restaurants)
-            .where(eq(schema.restaurants.id, req.params.id));
+            .where(eq(schema.restaurants.id, route_parameters.id));
 
         res.status(StatusCodes.OK).send(result);
 
@@ -55,11 +58,13 @@ const Handler: restaurantsInterface = {
     },
 
     updateRestaurant: async (req, res, next) => {
+        const route_parameters = req.params as dto.updateRestaurantRouteDTO;
+
         try {
             const result = await db
                 .update(schema.restaurants)
                 .set(req.body)
-                .where(eq(schema.restaurants.id, req.params.id));
+                .where(eq(schema.restaurants.id, route_parameters.id));
 
             if (!result) throw new Error();
         } catch (e) {
@@ -73,9 +78,11 @@ const Handler: restaurantsInterface = {
     },
 
     deleteRestaurant: async (req, res, next) => {
+        const route_parameters = req.params as dto.deleteRestaurantRouteDTO;
+
         const result = await db
             .delete(schema.restaurants)
-            .where(eq(schema.restaurants.id, req.params.id));
+            .where(eq(schema.restaurants.id, route_parameters.id));
 
         if (!result) {
             res.status(StatusCodes.NOT_FOUND).send(

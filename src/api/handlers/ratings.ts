@@ -22,7 +22,7 @@ const Handler: ratingsInterface = {
             // Update new avg rating
             await db
                 .update(schema.restaurants)
-                .set({ avg_rating: new_rating })
+                .set({ avg_rating: +new_rating })
                 .where(eq(schema.restaurants.id, restaurant_id));
         } catch (e) {
             console.log(e);

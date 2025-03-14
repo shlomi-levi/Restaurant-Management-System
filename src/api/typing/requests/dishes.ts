@@ -1,8 +1,6 @@
 import { IsString, IsNumber, IsInt, Min, IsNotEmpty } from "class-validator";
-import { IsOptionalNonNullable } from "../../routing/middleware/validator";
+import { IsOptionalNonNullable } from "../../routing/middleware/validation/validator";
 import { DISHES_REQUESTS, RequestDTO, EmptyClass } from "../api";
-
-type RequestTypes = keyof typeof DISHES_REQUESTS;
 
 export class addDishBodyDTO {
     @IsString({
@@ -56,28 +54,30 @@ export class updateDishRouteDTO extends addDishRouteDTO {
 
 export class deleteDishRouteDTO extends updateDishRouteDTO {}
 
+export class verifyDishExistsDTO extends updateDishRouteDTO {}
+
 export class getDishesByRestaurantRouteDTO extends addDishRouteDTO {}
 
-export const requestTypeToDTO: Record<RequestTypes, RequestDTO> = {
-    ADD_DISH: {
+export const requestTypeToDTO: Record<DISHES_REQUESTS, RequestDTO> = {
+    [DISHES_REQUESTS.ADD_DISH]: {
         routeDTO: addDishRouteDTO,
         bodyDTO: addDishBodyDTO,
         queryDTO: EmptyClass,
     },
 
-    UPDATE_DISH: {
+    [DISHES_REQUESTS.UPDATE_DISH]: {
         routeDTO: updateDishRouteDTO,
         bodyDTO: updateDishBodyDTO,
         queryDTO: EmptyClass,
     },
 
-    DELETE_DISH: {
+    [DISHES_REQUESTS.DELETE_DISH]: {
         routeDTO: deleteDishRouteDTO,
         bodyDTO: EmptyClass,
         queryDTO: EmptyClass,
     },
 
-    GET_DISHES_BY_RESTAURANT: {
+    [DISHES_REQUESTS.GET_DISHES_BY_RESTAURANT]: {
         routeDTO: getDishesByRestaurantRouteDTO,
         bodyDTO: EmptyClass,
         queryDTO: EmptyClass,

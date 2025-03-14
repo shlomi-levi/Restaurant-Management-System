@@ -1,25 +1,26 @@
 process.env.NODE_ENV = "test";
 
 import request from "supertest";
-import app from "./src/index";
-import { server } from "./src/index";
+import app from "../index";
+import { server } from "../index";
 import * as restaurantMocks from "./mocks/restaurant";
 import * as dishesMocks from "./mocks/dishes";
 import * as ordersMocks from "./mocks/orders";
 import * as ratingsMocks from "./mocks/ratings";
 import { StatusCodes } from "http-status-codes";
-import client from "./db/db";
+// import client from "../db/db";
 
 let restaurantToDeleteId: number;
 let restaurantToTestId: number;
 
 const cleanUp = async () => {
-    await client.query("TRUNCATE TABLE RESTAURANTS CASCADE");
-    await client.query("TRUNCATE TABLE RATINGS CASCADE");
-    await client.query("TRUNCATE TABLE DISHES CASCADE");
-    await client.query("TRUNCATE TABLE ORDERS CASCADE");
-    await client.query("TRUNCATE TABLE ORDERITEM CASCADE");
-    await client.end();
+    // TODO: Redo all of this.
+    // await client.query("TRUNCATE TABLE RESTAURANTS CASCADE");
+    // await client.query("TRUNCATE TABLE RATINGS CASCADE");
+    // await client.query("TRUNCATE TABLE DISHES CASCADE");
+    // await client.query("TRUNCATE TABLE ORDERS CASCADE");
+    // await client.query("TRUNCATE TABLE ORDERITEM CASCADE");
+    // await client.end();
 };
 
 function getRandomArbitrary(min: number, max: number): number {

@@ -1,5 +1,5 @@
-import { db } from "../../../db/db";
-import * as schema from "../../../db/drizzle/schema";
+import { db } from "../../../../db/db";
+import * as schema from "../../../../db/drizzle/schema";
 import { eq, and } from "drizzle-orm";
 
 export const orderIdExists = async (order_id: string): Promise<boolean> => {

@@ -1,57 +1,17 @@
-import { IsArray, IsInt } from "class-validator";
-import { validateInput } from "./validator";
 import { Request, Response } from "express";
-import { checkRestaurantExistence, checkDishExistence } from "../db_validations";
+import { restaurantExists, dishExists } from "./db_validations";
 import { StatusCodes } from "http-status-codes";
-
-export const validateNewOrderSyntax = async (
-    req: Request,
-    res: Response,
-    next: Function
-) => {
-    let dto_object = new orderRequestDTO();
-    Object.assign(dto_object, req.body);
-
-    let input_validated: boolean = await validateInput(
-        req,
-        res,
-        next,
-        dto_object,
-        false,
-        false,
-        false
-    );
-
-    if (!input_validated) return;
-
-    // Using ValidateNested didn't work for some reason, so I am validating one by one.
-
-    for (const item of dto_object.orderItems) {
-        let dto_object_orderItem = new orderItemsDTO();
-
-        input_validated = await validateInput(
-            req,
-            res,
-            next,
-            dto_object_orderItem,
-            false,
-            false,
-            false,
-            item
-        );
-
-        if (!input_validated) return;
-    }
-
-    next();
-};
+import { addOrderBodyDTO } from "../../../typing/requests/orders";
+import { ORDERS_REQUESTS } from "../../../typing/api";
+import { requestTypeToDTO } from "../../../typing/requests/orders";
+import { baseValidateSyntax } from "./validator";
 
 export const validateRestaurantExistence = async (
     req: Request,
     res: Response,
     next: Function
 ) => {
-    const exists: boolean = await checkRestaurantExistence(req.body.restaurantId);
+    const exists: boolean = await restaurantExists(req.body.restaurantId);
     if (!exists) {
         res.status(StatusCodes.BAD_REQUEST).send("There is no restaurant with this id");
         return;
@@ -60,7 +20,7 @@ export const validateRestaurantExistence = async (
 };
 
 export const validateDishesExistence = async (
-    req: Request,
+    req: Request<any, any, addOrderBodyDTO>,
     res: Response,
     next: Function
 ) => {
@@ -68,7 +28,7 @@ export const validateDishesExistence = async (
 
     for (const item of req.body.orderItems) {
         const dish_id = item.dishId;
-        const exists: boolean = await checkDishExistence(restaurant_id, dish_id);
+        const exists: boolean = await dishExists(restaurant_id, dish_id);
 
         if (!exists) {
             res.status(StatusCodes.BAD_REQUEST).send(
@@ -82,3 +42,12 @@ export const validateDishesExistence = async (
     }
     next();
 };
+
+type validateSyntaxReturnType = ReturnType<typeof baseValidateSyntax>;
+
+export const validateSyntax = Object.fromEntries(
+    Object.keys(ORDERS_REQUESTS).map((req) => [
+        req,
+        baseValidateSyntax(requestTypeToDTO[req as unknown as ORDERS_REQUESTS]),
+    ])
+) as Record<ORDERS_REQUESTS, validateSyntaxReturnType>;

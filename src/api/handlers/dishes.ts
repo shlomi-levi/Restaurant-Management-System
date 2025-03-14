@@ -3,10 +3,13 @@ import { db } from "../../db/db";
 import * as schema from "../../db/drizzle/schema";
 import { StatusCodes } from "http-status-codes";
 import { and, eq } from "drizzle-orm";
+import * as dto from "../typing/requests/dishes";
 
-const Handler: dishesInterface = {
+export const Handler: dishesInterface = {
     addDish: async (req, res, next) => {
-        const restaurant_id = req.params.id; // TODO: validate that it is an integer, before even getting to this phase (or check wether req.params is always a string)
+        const route_parameters = req.params as dto.addDishRouteDTO;
+
+        const restaurant_id = route_parameters.id; // TODO: validate that it is an integer, before even getting to this phase (or check wether req.params is always a string)
 
         try {
             const { name, description, price } = req.body;
@@ -29,8 +32,10 @@ const Handler: dishesInterface = {
     },
 
     updateDish: async (req, res, next) => {
-        const restaurant_id = req.params.id;
-        const dish_id = req.params.dishId;
+        const route_parameters = req.params as dto.updateDishRouteDTO;
+
+        const [restaurant_id, dish_id] = [route_parameters.id, route_parameters.dishId];
+
         try {
             const res = await db
                 .update(schema.dishes)
@@ -55,8 +60,9 @@ const Handler: dishesInterface = {
     },
 
     deleteDish: async (req, res, next) => {
-        const restaurant_id = req.params.id;
-        const dish_id = req.params.dishId;
+        const route_parameters = req.params as dto.deleteDishRouteDTO;
+
+        const [restaurant_id, dish_id] = [route_parameters.id, route_parameters.dishId];
 
         try {
             const res = await db
@@ -80,8 +86,10 @@ const Handler: dishesInterface = {
     },
 
     getDishesByRestaurant: async (req, res, next) => {
+        const route_parameters = req.params as dto.getDishesByRestaurantRouteDTO;
+
         try {
-            const restaurant_id = req.params.id;
+            const restaurant_id = route_parameters.id;
             const res = await db
                 .select({
                     id: schema.dishes.id,
@@ -101,3 +109,5 @@ const Handler: dishesInterface = {
         next();
     },
 };
+
+export default Handler;
