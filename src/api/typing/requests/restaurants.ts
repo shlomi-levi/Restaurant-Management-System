@@ -1,10 +1,23 @@
-import { IsString, IsBoolean, IsInt, IsArray, IsNotEmpty } from "class-validator";
+import {
+    IsString,
+    IsBoolean,
+    IsInt,
+    IsArray,
+    IsNotEmpty,
+    IsOptional,
+} from "class-validator";
 import { IsOptionalNonNullable } from "../../routing/middleware/validation/validator";
 import { RESTAURANTS_REQUESTS, RequestDTO, EmptyClass } from "../api";
 
 export class getRestaurantsByCuisineQueryDTO {
     @IsString({ message: "cuisine must be a string" })
     cuisine: string;
+}
+
+export class getRestaurantsQueryDTO {
+    @IsString({ message: "cuisine must be a string" })
+    @IsOptional()
+    cuisine?: string;
 }
 
 export class getRestaurantsByIdRouteDTO {
@@ -55,16 +68,10 @@ export class deleteRestaurantRouteDTO {
 }
 
 export const requestTypeToDTO: Record<RESTAURANTS_REQUESTS, RequestDTO> = {
-    [RESTAURANTS_REQUESTS.GET_ALL_RESTAURANTS]: {
+    [RESTAURANTS_REQUESTS.GET_RESTAURANTS]: {
         routeDTO: EmptyClass,
         bodyDTO: EmptyClass,
-        queryDTO: EmptyClass,
-    },
-
-    [RESTAURANTS_REQUESTS.GET_RESTAURANTS_BY_CUISINE]: {
-        routeDTO: EmptyClass,
-        bodyDTO: EmptyClass,
-        queryDTO: getRestaurantsByCuisineQueryDTO,
+        queryDTO: getRestaurantsQueryDTO,
     },
 
     [RESTAURANTS_REQUESTS.GET_RESTAURANT_BY_ID]: {

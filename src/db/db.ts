@@ -1,20 +1,17 @@
-import postgres from "postgres";
-import { drizzle } from "drizzle-orm/postgres-js";
-import { migrate } from "drizzle-orm/postgres-js/migrator";
+import "dotenv/config";
+import { drizzle } from "drizzle-orm/node-postgres";
+import pg from "pg";
 
-const queryClient = postgres(process.env.DATABASE_URL as string);
-const db = drizzle({ client: queryClient });
+const { Pool } = pg;
 
-const initDB = async () => {
-    try {
-        await migrate(db, { migrationsFolder: "../drizzle/migrations" }); // Pass config object
-        console.log("Migrations applied successfully");
-    } catch (error) {
-        console.error("Migration failed:", error);
-    }
-};
+export const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+});
+
+const db = drizzle(pool);
 
 async function testConnection() {
+    console.log("Testing connection...");
     try {
         await db.execute(`SELECT 1`);
         console.log("Database connection successful");
@@ -24,8 +21,5 @@ async function testConnection() {
     }
 }
 
-initDB();
-testConnection();
+export { db, testConnection };
 // TODO: make sure that if we are in test mode that the databse is "test_database"
-
-export { initDB, testConnection, queryClient, db };

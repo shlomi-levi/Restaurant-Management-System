@@ -2,7 +2,7 @@ import { restaurantExists } from "./db_validations";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { RATINGS_REQUESTS } from "../../../typing/api";
-import { baseValidateSyntax } from "./validator";
+import { baseValidateSyntax, getObjectNumericKeys } from "./validator";
 import { requestTypeToDTO } from "../../../typing/requests/ratings";
 
 export const validateRestaurantExistence = async (
@@ -21,7 +21,7 @@ export const validateRestaurantExistence = async (
 type validateSyntaxReturnType = ReturnType<typeof baseValidateSyntax>;
 
 export const validateSyntax = Object.fromEntries(
-    Object.keys(RATINGS_REQUESTS).map((req) => [
+    getObjectNumericKeys(RATINGS_REQUESTS).map((req) => [
         req,
         baseValidateSyntax(requestTypeToDTO[req as unknown as RATINGS_REQUESTS]),
     ])

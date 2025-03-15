@@ -1,15 +1,13 @@
+import "reflect-metadata";
 import dotenv from "dotenv";
 import express from "express";
 import { restaurantsRouter } from "./api/routing/routes/restaurants";
 import { ratingsRouter } from "./api/routing/routes/ratings";
 import { ordersRouter } from "./api/routing/routes/orders";
-import { initDB, testConnection, queryClient } from "./db/db";
+import { testConnection, pool } from "./db/db";
 
 //For env File
 dotenv.config();
-
-initDB();
-testConnection();
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -25,7 +23,9 @@ export const server = app.listen(port, () => {
 
 process.on("SIGINT", async () => {
     try {
-        await queryClient.end();
+        await pool.end();
+        server.close();
+
         process.exit(0);
     } catch (error) {
         console.error("error during disconnection", error);
@@ -35,12 +35,20 @@ process.on("SIGINT", async () => {
 
 process.on("SIGTERM", async () => {
     try {
-        await queryClient.end();
+        await pool.end();
+        server.close();
+
         process.exit(0);
     } catch (error) {
         console.error("error during disconnection", error);
         process.exit(1);
     }
 });
+
+const main = async () => {
+    await testConnection();
+};
+
+main();
 
 export default app;

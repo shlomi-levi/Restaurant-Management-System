@@ -6,8 +6,7 @@ export const enum API {
 }
 
 export enum RESTAURANTS_REQUESTS {
-    GET_ALL_RESTAURANTS = 5,
-    GET_RESTAURANTS_BY_CUISINE = 6,
+    GET_RESTAURANTS = 5,
     GET_RESTAURANT_BY_ID = 7,
     ADD_RESTAURANT = 8,
     UPDATE_RESTAURANT = 9,
@@ -29,17 +28,10 @@ export enum DISHES_REQUESTS {
     GET_DISHES_BY_RESTAURANT = 16,
 }
 
-// export const apiToRequestTypes = {
-//     RESTAURANTS: RESTAURANTS_REQUESTS,
-//     RATINGS: RATINGS_REQUESTS,
-//     ORDERS: ORDERS_REQUESTS,
-//     DISHES: DISHES_REQUESTS,
-// } as const;
-
 export type RequestDTO = {
-    routeDTO: new () => any;
-    bodyDTO: new () => any;
-    queryDTO: new () => any;
+    routeDTO: any;
+    bodyDTO: any;
+    queryDTO: any;
 };
 
 export class EmptyClass {}

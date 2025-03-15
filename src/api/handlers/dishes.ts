@@ -90,7 +90,7 @@ export const Handler: dishesInterface = {
 
         try {
             const restaurant_id = route_parameters.id;
-            const res = await db
+            const result = await db
                 .select({
                     id: schema.dishes.id,
                     name: schema.dishes.name,
@@ -99,12 +99,11 @@ export const Handler: dishesInterface = {
                 })
                 .from(schema.dishes)
                 .where(eq(schema.dishes.restaurant_id, restaurant_id));
+            res.status(StatusCodes.OK).send(result);
         } catch (e) {
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Internal Server Error");
             return Promise.resolve();
         }
-
-        res.status(StatusCodes.OK).send(res);
 
         next();
     },

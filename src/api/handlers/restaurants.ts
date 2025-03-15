@@ -5,7 +5,17 @@ import { arrayOverlaps, eq } from "drizzle-orm";
 import * as schema from "../../db/drizzle/schema";
 import * as dto from "../typing/requests/restaurants";
 
+import { Request } from "express";
+
 const Handler: restaurantsInterface = {
+    getRestaurants: async (req, res, next) => {
+        if (!req.query.cuisine) return Handler.getAllRestaurants(req, res, next);
+
+        const newReq = req as Request<any, any, {}, dto.getRestaurantsByCuisineQueryDTO>;
+
+        Handler.getRestaurantsByCuisine(newReq, res, next);
+    },
+
     getAllRestaurants: async (req, res, next) => {
         const result = await db.select().from(schema.restaurants);
         res.status(StatusCodes.OK).send(result);

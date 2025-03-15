@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { NextFunction, Router } from "express";
 import {
     restaurantExistenceValidator,
     dishExistenceValidator,
@@ -12,10 +12,19 @@ export const restaurantsRouter = Router();
 
 /* Restaurant API */
 
+const test = (req: any, res: any, next: any) => {
+    console.log("Inside test");
+    const ab = (next: any) => {
+        console.log(1);
+        next();
+    };
+    return ab;
+};
+
 restaurantsRouter.get(
     "/",
-    validateSyntax[RESTAURANTS_REQUESTS.GET_ALL_RESTAURANTS],
-    RestaurantsHandler.getAllRestaurants
+    validateSyntax[RESTAURANTS_REQUESTS.GET_RESTAURANTS],
+    RestaurantsHandler.getRestaurants
 );
 
 restaurantsRouter.get(

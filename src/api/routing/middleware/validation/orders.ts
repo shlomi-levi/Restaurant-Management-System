@@ -4,7 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import { addOrderBodyDTO } from "../../../typing/requests/orders";
 import { ORDERS_REQUESTS } from "../../../typing/api";
 import { requestTypeToDTO } from "../../../typing/requests/orders";
-import { baseValidateSyntax } from "./validator";
+import { baseValidateSyntax, getObjectNumericKeys } from "./validator";
 
 export const validateRestaurantExistence = async (
     req: Request,
@@ -46,7 +46,7 @@ export const validateDishesExistence = async (
 type validateSyntaxReturnType = ReturnType<typeof baseValidateSyntax>;
 
 export const validateSyntax = Object.fromEntries(
-    Object.keys(ORDERS_REQUESTS).map((req) => [
+    getObjectNumericKeys(ORDERS_REQUESTS).map((req) => [
         req,
         baseValidateSyntax(requestTypeToDTO[req as unknown as ORDERS_REQUESTS]),
     ])
